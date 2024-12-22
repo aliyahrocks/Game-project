@@ -40,13 +40,13 @@ function setup()
 	isRight = false;
 	
 	collectable ={
-		x_pos: 300, 
+		x_pos: [300, 900, 1820], 
 		y_pos: 400, 
 		size: 40,
 		isFound: false
 	};
 	canyon = {
-		x_pos:80,
+		x_pos:[80, 830, 1860, 3800],
 		y_pos:floorPos_y
 	};
 
@@ -101,7 +101,7 @@ function draw()
 		ellipse(cloud.x_pos[j]+60,cloud.y_pos,cloud.size+30);
 		ellipse(cloud.x_pos[j]+130,cloud.y_pos,cloud.size+10);
 		ellipse(cloud.x_pos[j],cloud.y_pos,cloud.size);
-
+		//cloud 2
 		ellipse(cloud.x_pos[j] - 40,cloud.y_pos+150,cloud.size+30);
 		ellipse(cloud.x_pos[j]+30,cloud.y_pos+150,cloud.size+10);
 		ellipse(cloud.x_pos[j] - 100,cloud.y_pos+150,cloud.size);
@@ -112,42 +112,41 @@ function draw()
 		//tree bark
 		fill(150, 88, 63);
 		rect(trees_x[i],treePos_y,50,200);
-
 		//tree leaves
 		fill(122, 163, 91);
 		ellipse(trees_x[i],treePos_y+28,100);
 		ellipse(trees_x[i]+25,treePos_y-17,110);
 		ellipse(trees_x[i]+60,treePos_y+28,100);
-
 	}
 
-
-
-	//draw the canyon
-	//canyon
-	//stream of water
-	fill(255, 245, 238)
-	rect(canyon.x_pos,canyon.y_pos, 150, width - floorPos_y);
-	//mountains
-	fill(204, 154, 129);
-	rect(canyon.x_pos,canyon.y_pos, 50, width - floorPos_y);
-	rect(canyon.x_pos+140,canyon.y_pos, 50, width - floorPos_y);
-
-
-
-
-	//condition for the character to be drawn
-	if(dist(collectable.x_pos, collectable.y_pos, gameChar_x, gameChar_y) < 20)
-	{
-		collectable.isFound = true;
+	//for loop to draw multiple canyons
+	for (var i = 0; i < canyon.x_pos.length; i++) {
+		//empty space between ledges
+		fill(255, 245, 238)
+		rect(canyon.x_pos[i],canyon.y_pos, 150, width - floorPos_y);
+		//mountains
+		fill(204, 154, 129);
+		rect(canyon.x_pos[i],canyon.y_pos, 50, width - floorPos_y);
+		rect(canyon.x_pos[i]+140,canyon.y_pos, 50, width - floorPos_y);
 	}
-	//draw the collectable
-	if (collectable.isFound == false){
-		strokeWeight(4);
-		stroke(255,215,0);
-		fill(229, 108, 148);
-		ellipse(collectable.x_pos,collectable.y_pos,collectable.size);
+	
+	//for loop to draw multiple collectables
+	for (var k = 0; k < collectable.x_pos.length; k++) {
+		//condition for the character to be drawn
+		if(dist(collectable.x_pos[k], collectable.y_pos, gameChar_x, gameChar_y) < 20)
+			{
+				collectable.isFound = true;
+			}
+			//draw the collectable
+			if (collectable.isFound == false){
+				strokeWeight(4);
+				stroke(255,215,0);
+				fill(229, 108, 148);
+				ellipse(collectable.x_pos[k],collectable.y_pos,collectable.size);
+			}	
+			
 	}
+	
 	
 	
 
@@ -336,20 +335,24 @@ function draw()
 	}
 	
 
-    //conditional statement to set isPlummetting to true
-	if(gameChar_x < canyon.x_pos +140 && gameChar_x > canyon.x_pos+50 && gameChar_y > floorPos_y -1){
-		isPlummeting = true;
-		console.log("Is plummetting", gameChar_x);
+    //conditional statement to set isPlummetting to true within a for loop to iterate through the multiple canyons
+	for(var j =0; j < canyon.x_pos.length; j++){
+		if(gameChar_x < canyon.x_pos[j] +140 && gameChar_x > canyon.x_pos[j]+50 && gameChar_y > floorPos_y -1){
+			isPlummeting = true;
+			console.log("Is plummetting", gameChar_x);
+		}
+		else {
+			isPlummeting = false;
+		}
+
+		//characters falls down the canyon
+		if(isPlummeting == true){
+			gameChar_y +=7;
+			gameChar_x = canyon.x_pos[j]+90;
+			
+		}
 	}
-	else {
-		isPlummeting = false;
-	}
-	//characters falls down the canyon
-	if(isPlummeting == true){
-		gameChar_y +=7;
-		gameChar_x = canyon.x_pos+90;
-		
-	}
+
 	
 	
 
