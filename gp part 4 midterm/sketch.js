@@ -18,7 +18,7 @@ var isPlummeting;
 var isFalling;
 var collectable;
 var canyon;
-var treePos_x;
+var trees_x;
 var treePos_y;
 var cloud;
 var mountain;
@@ -50,17 +50,17 @@ function setup()
 		y_pos:floorPos_y
 	};
 
-	treePos_x = 750;
+	trees_x = [30, 780, 1530, 2280];
 	treePos_y = 232;
 
 	cloud = {
-		x_pos: 140,
+		x_pos: [140, 650, 1160, 1670],
 		y_pos: 100,
 		size: 70,
 	};
 
 	mountain = {
-		x_pos: 600,
+		x_pos: [600, 1600, 2600, 3600],
 		y_pos: 432, 
 
 	};
@@ -70,7 +70,7 @@ function setup()
 
 function draw()
 {
-	cameraPosx++;
+	cameraPosx = gameChar_x/2;
 
 	///////////DRAWING CODE//////////
 
@@ -82,42 +82,42 @@ function draw()
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
 
 	push();
-	translate(cameraPosx, 0);
+	translate(-cameraPosx, 0);
 
 	for(var m = 0; m < 10; m++){
 		//mountain
 		fill(175, 175, 176);
-		triangle(mountain.x_pos + (m*800),mountain.y_pos-332,mountain.x_pos-250 + (m*800),mountain.y_pos,mountain.x_pos+250 + (m*800),mountain.y_pos);
+		triangle(mountain.x_pos[m],mountain.y_pos-332,mountain.x_pos[m]-250,mountain.y_pos,mountain.x_pos[m]+250,mountain.y_pos);
 		//snow on top of the mountain
 		fill(255);
-		triangle(mountain.x_pos + (m*800),mountain.y_pos-332,mountain.x_pos-75 + (m*800),mountain.y_pos-232,mountain.x_pos+75 + (m*800),mountain.y_pos-232); 
+		triangle(mountain.x_pos[m],mountain.y_pos-332,mountain.x_pos[m]-75,mountain.y_pos-232,mountain.x_pos[m]+75,mountain.y_pos-232); 
 	}
 
 	//for loop to draw multiple clouds
-	for(var j = 0; j < 10; j++){
+	for(var j = 0; j < cloud.x_pos.length; j++){
 		//cloud
 		fill(255);
 		//cloud 1
-		ellipse(cloud.x_pos+60 + (j*480),cloud.y_pos,cloud.size+30);
-		ellipse(cloud.x_pos+130 + (j*480),cloud.y_pos,cloud.size+10);
-		ellipse(cloud.x_pos + (j*480),cloud.y_pos,cloud.size);
+		ellipse(cloud.x_pos[j]+60,cloud.y_pos,cloud.size+30);
+		ellipse(cloud.x_pos[j]+130,cloud.y_pos,cloud.size+10);
+		ellipse(cloud.x_pos[j],cloud.y_pos,cloud.size);
 
-		ellipse(cloud.x_pos - 40 + (j*560),cloud.y_pos+150,cloud.size+30);
-		ellipse(cloud.x_pos+30 + (j*560),cloud.y_pos+150,cloud.size+10);
-		ellipse(cloud.x_pos - 100 + (j*560),cloud.y_pos+150,cloud.size);
+		ellipse(cloud.x_pos[j] - 40,cloud.y_pos+150,cloud.size+30);
+		ellipse(cloud.x_pos[j]+30,cloud.y_pos+150,cloud.size+10);
+		ellipse(cloud.x_pos[j] - 100,cloud.y_pos+150,cloud.size);
 	}
 
 	//for loop to draw multiple trees
-	for(var i = 0; i < 10; i++){
+	for(var i = 0; i < trees_x.length; i++){
 		//tree bark
 		fill(150, 88, 63);
-		rect(treePos_x + (i*350),treePos_y,50,200);
+		rect(trees_x[i],treePos_y,50,200);
 
 		//tree leaves
 		fill(122, 163, 91);
-		ellipse(treePos_x + (i*350),treePos_y+28,100);
-		ellipse(treePos_x+25 + (i*350),treePos_y-17,110);
-		ellipse(treePos_x+60 + (i*350),treePos_y+28,100);
+		ellipse(trees_x[i],treePos_y+28,100);
+		ellipse(trees_x[i]+25,treePos_y-17,110);
+		ellipse(trees_x[i]+60,treePos_y+28,100);
 
 	}
 
